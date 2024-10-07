@@ -1,25 +1,21 @@
 import React from 'react';
 
-import { Avatar, Badge, Button, Card, Col, Flex, Row, Space, Typography, Upload } from 'antd';
+import { Badge, Button, Col, Flex, Row, Space, Typography, Upload } from 'antd';
 
 import { AlignLeftOutlined, FilterOutlined, UploadOutlined } from '@ant-design/icons';
 
-import LineChart from '@/components/charts/LineChart';
+import { dehydrate, QueryClient } from '@tanstack/react-query';
+
 import Hide from '@/components/layout/hide';
+import {
+  Covid19StatisticsChart,
+  prefetchCovid19StatisticsChartData,
+} from '@/components/modules/dashboard/Covid19StatisticsChart';
+
+const YEAR = 2024;
+const PAGE_SIZE = 90;
 
 const Home = () => {
-  const data = [
-    { year: '1991', value: 3 },
-    { year: '1992', value: 4 },
-    { year: '1993', value: 3.5 },
-    { year: '1994', value: 5 },
-    { year: '1995', value: 4.9 },
-    { year: '1996', value: 6 },
-    { year: '1997', value: 7 },
-    { year: '1998', value: 9 },
-    { year: '1999', value: 13 },
-  ];
-
   return (
     <Flex vertical gap={16}>
       <Flex style={{ justifyContent: 'space-between', alignItems: 'center' }}>
@@ -49,26 +45,26 @@ const Home = () => {
       </Flex>
       <Row gutter={[32, 32]}>
         <Col span={24} lg={{ span: 12 }}>
-          <Card title="Chart Title">
-            <LineChart data={data} xField="year" yField="value" height={400} />
-            <Card.Meta
-              style={{ alignItems: 'center' }}
-              avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
-            />
-          </Card>
+          <Covid19StatisticsChart height={400} pageSize={PAGE_SIZE} year={YEAR} />
         </Col>
         <Col span={24} lg={{ span: 12 }}>
-          <Card title="Chart Title">
-            <LineChart data={data} xField="year" yField="value" height={400} />
-            <Card.Meta
-              style={{ alignItems: 'center' }}
-              avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
-            />
-          </Card>
+          <Covid19StatisticsChart height={400} pageSize={PAGE_SIZE} year={YEAR} />
         </Col>
       </Row>
     </Flex>
   );
 };
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+
+  await prefetchCovid19StatisticsChartData(queryClient, { pageSize: PAGE_SIZE, year: YEAR });
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default Home;

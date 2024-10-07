@@ -1,0 +1,898 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "UKHSA Data Dashboard API Docs",
+    "version": "v 0.1.0",
+    "description": "Docs for the API which supports the UKHSA Data Dashboard."
+  },
+  "paths": {
+    "/health/": {
+      "get": {
+        "operationId": "get_health",
+        "description": "This health probe can be used to determine whether the service is ready.",
+        "tags": ["health"],
+        "responses": {
+          "200": {
+            "description": "No response body"
+          }
+        }
+      }
+    },
+    "/themes/": {
+      "get": {
+        "operationId": "get_theme_list",
+        "description": "This endpoint returns a list of all available **themes** and hyperlinks to their corresponding detail view.\n\nA `theme` is the largest topical subgroup e.g. **infectious_disease**.",
+        "tags": ["themes"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}": {
+      "get": {
+        "operationId": "get_theme_detail",
+        "description": "This endpoint returns a hyperlink to the next step in the data hierarchy.\n\nIn this case, the next step in the data hierarchy is **sub_themes**.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["themes"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ThemeDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/": {
+      "get": {
+        "operationId": "get_sub_theme_list",
+        "description": "This endpoint returns a list of all available **sub_themes** and hyperlinks to their corresponding detail view.\n\nThe `sub_theme` field is positioned 1 step below `theme`.\n\nA `sub_theme` is a topical subgroup  e.g. **respiratory**",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["sub_themes"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubThemeList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}": {
+      "get": {
+        "operationId": "get_sub_theme_detail",
+        "description": "This endpoint returns a hyperlink to the next step in the data hierarchy.\n\nIn this case, the next step in the data hierarchy is **topics**.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["sub_themes"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SubThemeDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics": {
+      "get": {
+        "operationId": "get_topic_list",
+        "description": "This endpoint returns a list of all available **topics** and hyperlinks to their corresponding detail view.\n\nThe `topic` field is positioned 1 step below `sub_theme`.\n\nA `topic` is the name of the topic/threat e.g. **COVID-19**",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["topics"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}": {
+      "get": {
+        "operationId": "get_topic_detail",
+        "description": "This endpoint returns a hyperlink to the next step in the data hierarchy.\n\nIn this case, the next step in the data hierarchy is **geography_type**.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["topics"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TopicDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}/geography_types": {
+      "get": {
+        "operationId": "get_geography_type_list",
+        "description": "This endpoint returns a list of all available geography types and hyperlinks to their corresponding detail view.\n\nThe `geography_type` field is positioned 1 step below `topic`.\n\nA `geography_type` is the type of geography e.g. **Nation**",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["geography_types"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeographyTypeList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}/geography_types/{geography_type}": {
+      "get": {
+        "operationId": "get_geography_type_detail",
+        "description": "This endpoint returns a hyperlink to the next step in the data hierarchy.\n\nIn this case, the next step in the data hierarchy is **geography**.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "geography_type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["geography_types"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeographyTypeDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}/geography_types/{geography_type}/geographies": {
+      "get": {
+        "operationId": "get_geography_list",
+        "description": "This endpoint returns a list of all available geographies and hyperlinks to their corresponding detail view.\n\nThe `geography` field is positioned 1 step below `geography_type`.\n\nA `geography` is the value of the geography e.g. **London**",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "geography_type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["geographies"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeographyList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}/geography_types/{geography_type}/geographies/{geography}": {
+      "get": {
+        "operationId": "get_geography_detail",
+        "description": "This endpoint returns a hyperlink to the next step in the data hierarchy.\n\nIn this case, the next step in the data hierarchy is **metric**.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "geography",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "geography_type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["geographies"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeographyDetail"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}/geography_types/{geography_type}/geographies/{geography}/metrics": {
+      "get": {
+        "operationId": "get_metric_list",
+        "description": "This endpoint returns a list of all available metrics and hyperlinks to their corresponding detail view.\n\nThe `metric` field is positioned 1 step below `geography`.\n\nA `metric` is the name of the metric being queried for e.g. **COVID-19_deaths_ONSByDay**",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "geography",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "geography_type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "tags": ["metrics"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricList"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    },
+    "/themes/{theme}/sub_themes/{sub_theme}/topics/{topic}/geography_types/{geography_type}/geographies/{geography}/metrics/{metric}": {
+      "get": {
+        "operationId": "get_metric_detail",
+        "description": "This endpoint will provide the full timeseries of a slice of data.\n\nThere are a set of mandatory URL parameters and optional query parameters:\n\nNote that by default, results are paginated by a page size of 5\n\nThis page size can be changed using the *page_size* parameter.\nThe maximum supported page size is **365**.\n\n---\n\nWhereby the mandatory URL parameters are as follows in order from first to last:\n\n- `theme` - The largest topical subgroup e.g. **infectious_disease**\n\n- `sub_theme` - A topical subgroup e.g. **respiratory**\n\n- `topic` - The name of the topic e.g. **COVID-19**\n\n- `geography_type` - The type of the geography type e.g. **Nation**\n\n- `geography` - The name of the geography associated with metric  e.g. **London**\n\n- `metric` - The name of the metric being queried for e.g. **COVID-19_deaths_ONSByDay**\n\n---\n\nFrom here you can filter the data further via a set of optional query parameters:\n\n- `stratum` - Smallest subgroup a metric can be broken down into e.g. ethnicity, testing pillar\n\n- `age` - Smallest subgroup a metric can be broken down into e.g. **15_44** for the age group of 15-44 years\n\n- `sex` - Patient gender e.g. **f** for Female or **all** for all genders\n\n- `year` - Epi year of the metrics value (important for annual metrics) e.g. **2020**\n\n- `month` - Epi month of the metric value (important for monthly metrics) e.g. **12**\n\n- `epiweek` - Epi week of the metric value (important for weekly metrics) e.g. **30**\n\n- `date` - The date which this metric value was recorded in the format **YYYY-MM-DD** e.g. **2020-07-20**\n\n- `in_reporting_delay_period` - A boolean indicating whether the data point is considered to be subject\nto retrospective updates.",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "age",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "in": "query",
+            "name": "epiweek",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "path",
+            "name": "geography",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "geography_type",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "in_reporting_delay_period",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "in": "path",
+            "name": "metric",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "A page number within the paginated result set.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_size",
+            "required": false,
+            "in": "query",
+            "description": "Number of results to return per page.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sex",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "stratum",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "sub_theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "theme",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "path",
+            "name": "topic",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["metrics"],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricTimeSeries"
+                }
+              }
+            },
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "MetricTimeSeriesList": {
+        "type": "object",
+        "properties": {
+          "theme": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "sub_theme": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "topic": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "geography_type": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "geography": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "geography_code": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 9
+          },
+          "metric": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "metric_group": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 50
+          },
+          "stratum": {
+            "type": "string",
+            "maxLength": 50
+          },
+          "sex": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 3
+          },
+          "age": {
+            "type": "string",
+            "nullable": true,
+            "maxLength": 50
+          },
+          "year": {
+            "type": "integer",
+            "maximum": 32767,
+            "minimum": 0
+          },
+          "month": {
+            "type": "integer",
+            "maximum": 32767,
+            "minimum": 0,
+            "nullable": true
+          },
+          "epiweek": {
+            "type": "integer",
+            "maximum": 32767,
+            "minimum": 0
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "metric_value": {
+            "type": "number",
+            "format": "double"
+          },
+          "in_reporting_delay_period": {
+            "type": "boolean",
+            "default": false,
+            "description": "\nWhether the record falls within the current reporting delay period. \nIf true, then the value is subject to change in a subsequent retrospective update.\n"
+          }
+        },
+        "required": [
+          "age",
+          "date",
+          "epiweek",
+          "geography",
+          "geography_code",
+          "geography_type",
+          "metric",
+          "metric_value",
+          "month",
+          "sex",
+          "stratum",
+          "sub_theme",
+          "theme",
+          "topic",
+          "year"
+        ]
+      },
+      "GeographyDetail": {
+        "type": "object",
+        "properties": {
+          "metrics": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["metrics"]
+      },
+      "GeographyList": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["link", "name"]
+      },
+      "GeographyTypeDetail": {
+        "type": "object",
+        "properties": {
+          "geographies": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["geographies"]
+      },
+      "GeographyTypeList": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["link", "name"]
+      },
+      "MetricList": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["link", "name"]
+      },
+      "MetricTimeSeries": {
+        "type": "object",
+        "required": ["count", "results"],
+        "properties": {
+          "count": {
+            "type": "integer",
+            "example": 123
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=4"
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "format": "uri",
+            "example": "http://api.example.org/accounts/?page=2"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MetricTimeSeriesList"
+            }
+          }
+        }
+      },
+      "SubThemeDetail": {
+        "type": "object",
+        "properties": {
+          "topics": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["topics"]
+      },
+      "SubThemeList": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["link", "name"]
+      },
+      "ThemeDetail": {
+        "type": "object",
+        "properties": {
+          "sub_themes": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["sub_themes"]
+      },
+      "ThemeList": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["link", "name"]
+      },
+      "TopicDetail": {
+        "type": "object",
+        "properties": {
+          "geography_types": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["geography_types"]
+      },
+      "TopicList": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "link": {
+            "type": "string",
+            "format": "uri",
+            "readOnly": true
+          }
+        },
+        "required": ["link", "name"]
+      }
+    }
+  }
+}

@@ -8,7 +8,15 @@ import { inter } from './_app';
 
 const MyDocument = (props: DocumentProps) => (
   <Html lang="en" className={inter.variable}>
-    <Head>{props.styles}</Head>
+    <Head>
+      <link rel="icon" type="image/png" href="/favicon-48x48.png" sizes="48x48" />
+      <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+      <link rel="shortcut icon" href="/favicon.ico" />
+      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+      <meta name="apple-mobile-web-app-title" content="UKHSA" />
+      <link rel="manifest" href="/site.webmanifest" />
+      {props.styles}
+    </Head>
     <body>
       <Main />
       <NextScript />
