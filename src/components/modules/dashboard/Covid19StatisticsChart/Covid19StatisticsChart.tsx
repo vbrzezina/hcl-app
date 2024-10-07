@@ -4,13 +4,15 @@ import { Avatar, Card } from 'antd';
 
 import { QueryClient } from '@tanstack/react-query';
 
+import LineChart from '@/components/charts/LineChart';
+import Loader from '@/components/layout/Loader';
+
 import {
   GetMetricDetailData,
   prefetchUseMetricsServiceGetMetricDetail,
   useMetricsServiceGetMetricDetailSuspense,
 } from '@/api/ukhsa';
-import LineChart from '@/components/charts/LineChart';
-import Loader from '@/components/layout/Loader';
+
 import { COVID19Metrics } from '@/utils/constants';
 
 import { getCovid19EnglandMetricParams, getCovid19LineChartConfig } from './helpers';

@@ -22,7 +22,12 @@ module.exports = {
     '^@ant-design(.*)$',
     /* Other imports with @workspace */
     '^@(?!/).*$',
-    /* Local alias */
+    /* Specific local alias */
+    '^@/pages(.*)$',
+    '^@/components(.*)$',
+    '^@/api(.*)$',
+    '^@/utils(.*)$',
+    /* Other local alias */
     '^@/(.*)$',
     /* Relative imports (excerpt public assets) */
     '^[./]',

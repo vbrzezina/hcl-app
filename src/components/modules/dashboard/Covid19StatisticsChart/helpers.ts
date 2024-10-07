@@ -1,4 +1,5 @@
 import { GetMetricDetailData, MetricTimeSeriesList } from '@/api/ukhsa';
+
 import { COVID19Metrics } from '@/utils/constants';
 
 const getLabel = (record: MetricTimeSeriesList) => {
