@@ -6,7 +6,7 @@ import { AlignLeftOutlined, FilterOutlined, UploadOutlined } from '@ant-design/i
 
 import { dehydrate, QueryClient } from '@tanstack/react-query';
 
-import Hide from '@/components/layout/hide';
+import Hide from '@/components/layout/Hide';
 import {
   Covid19StatisticsChart,
   prefetchCovid19StatisticsChartData,
