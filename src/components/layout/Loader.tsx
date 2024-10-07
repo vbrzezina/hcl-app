@@ -11,9 +11,9 @@ const useStyles = createStyles(({ css }, { height }: LoadingProps) => ({
   spinnerContainer: css`
     display: flex;
     flex-direction: column;
-    flex: 1;
     justify-content: center;
     align-items: center;
+    flex: 1;
 
     ${height &&
     css`
