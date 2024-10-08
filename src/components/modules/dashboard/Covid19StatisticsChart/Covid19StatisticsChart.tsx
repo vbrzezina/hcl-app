@@ -1,66 +1,68 @@
 import { Suspense } from 'react';
 
-import { Avatar, Card } from 'antd';
+import { Avatar, Card, Flex, Typography } from 'antd';
+import { createStyles } from 'antd-style';
+
+import { CommentOutlined } from '@ant-design/icons';
 
 import { QueryClient } from '@tanstack/react-query';
 
-import LineChart from '@/components/charts/LineChart';
-import Loader from '@/components/layout/Loader';
+import { LineChart } from '@/components/charts';
+import { Loader } from '@/components/layout';
 
-import {
-  GetMetricDetailData,
-  prefetchUseMetricsServiceGetMetricDetail,
-  useMetricsServiceGetMetricDetailSuspense,
-} from '@/api/ukhsa';
+import { prefetchUseMetricsServiceGetMetricDetail, useMetricsServiceGetMetricDetailSuspense } from '@/api/ukhsa';
 
 import { COVID19Metrics } from '@/utils/constants';
 
 import { getCovid19EnglandMetricParams, getCovid19LineChartConfig } from './helpers';
 
-export const prefetchCovid19StatisticsChartData = async (
-  queryClient: QueryClient,
-  params: Pick<GetMetricDetailData, 'pageSize' | 'year'> = {},
-) => {
+export const prefetchCovid19StatisticsChartData = async (queryClient: QueryClient, year: number) => {
   await prefetchUseMetricsServiceGetMetricDetail(
     queryClient,
-    getCovid19EnglandMetricParams(COVID19Metrics.AdmissionByDay, params),
+    getCovid19EnglandMetricParams(COVID19Metrics.CasesByDay, { pageSize: 365, year }),
   );
 
   await prefetchUseMetricsServiceGetMetricDetail(
     queryClient,
-    getCovid19EnglandMetricParams(COVID19Metrics.OccupiedBedsByDay, params),
+    getCovid19EnglandMetricParams(COVID19Metrics.AdmissionByDay, { pageSize: 365, year }),
   );
 
   await prefetchUseMetricsServiceGetMetricDetail(
     queryClient,
-    getCovid19EnglandMetricParams(COVID19Metrics.PCRcountByDay, params),
+    getCovid19EnglandMetricParams(COVID19Metrics.DeathsONSRegByWeek, { pageSize: 53, year }),
   );
 };
 
+const useStyles = createStyles(({ css }) => ({
+  meta: css`
+    align-items: center;
+
+    .ant-card-meta-avatar {
+      width: 100%;
+    }
+  `,
+  icon: css`
+    font-size: 20px;
+  `,
+}));
+
 type Covid19StatisticsChartProps = {
   height: number;
-} & Pick<GetMetricDetailData, 'pageSize' | 'year'>;
+  year: number;
+};
 
-const Covid19StatisticsChartContent = ({ height, ...params }: Covid19StatisticsChartProps) => {
+const Covid19StatisticsChartContent = ({ height, year }: Covid19StatisticsChartProps) => {
   const { data: covidCasesByDay } = useMetricsServiceGetMetricDetailSuspense(
-    getCovid19EnglandMetricParams(COVID19Metrics.CasesByDay, params),
+    getCovid19EnglandMetricParams(COVID19Metrics.CasesByDay, { pageSize: 365, year }),
   );
   const { data: covidAdmissionByDay } = useMetricsServiceGetMetricDetailSuspense(
-    getCovid19EnglandMetricParams(COVID19Metrics.AdmissionByDay, params),
+    getCovid19EnglandMetricParams(COVID19Metrics.AdmissionByDay, { pageSize: 365, year }),
   );
-  const { data: covidPCRcountByDay } = useMetricsServiceGetMetricDetailSuspense(
-    getCovid19EnglandMetricParams(COVID19Metrics.PCRcountByDay, params),
-  );
-  const { data: covidOccupiedBedsByDay } = useMetricsServiceGetMetricDetailSuspense(
-    getCovid19EnglandMetricParams(COVID19Metrics.OccupiedBedsByDay, params),
+  const { data: covidDeathsONSRegByWeek } = useMetricsServiceGetMetricDetailSuspense(
+    getCovid19EnglandMetricParams(COVID19Metrics.DeathsONSRegByWeek, { pageSize: 53, year }),
   );
 
-  const data = [
-    ...covidCasesByDay.results,
-    ...covidAdmissionByDay.results,
-    ...covidOccupiedBedsByDay.results,
-    ...covidPCRcountByDay.results,
-  ];
+  const data = [...covidCasesByDay.results, ...covidAdmissionByDay.results, ...covidDeathsONSRegByWeek.results];
 
   return (
     <>
@@ -70,17 +72,26 @@ const Covid19StatisticsChartContent = ({ height, ...params }: Covid19StatisticsC
 };
 
 export const Covid19StatisticsChart = (props: Covid19StatisticsChartProps) => {
+  const { styles } = useStyles();
+
   return (
-    <Card title="Covid-19 England National Statistic">
+    <Card title="COVID-19 cases by day">
       <Suspense fallback={<Loader height={props.height} />}>
         <Covid19StatisticsChartContent {...props} />
       </Suspense>
       <Card.Meta
-        style={{ alignItems: 'center' }}
-        avatar={<Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />}
+        className={styles.meta}
+        avatar={
+          <Flex justify="space-between">
+            <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=8" />
+            <Flex>
+              <Typography className={styles.icon}>
+                3 <CommentOutlined />
+              </Typography>
+            </Flex>
+          </Flex>
+        }
       />
     </Card>
   );
 };
-
-export default Covid19StatisticsChart;

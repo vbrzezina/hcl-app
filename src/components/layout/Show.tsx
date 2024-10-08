@@ -17,10 +17,8 @@ const useStyles = createStyles(({ css, responsive }, { up, display = 'inline-blo
   `,
 }));
 
-const Show = ({ children, ...props }: PropsWithChildren<ShowProps>) => {
+export const Show = ({ children, ...props }: PropsWithChildren<ShowProps>) => {
   const { styles } = useStyles(props);
 
   return <div className={styles.container}>{children}</div>;
 };
-
-export default Show;

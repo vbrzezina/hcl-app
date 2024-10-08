@@ -18,7 +18,7 @@ const useStyles = createStyles(({ css, token, responsive }) => ({
   `,
 }));
 
-const Main = ({ children }: PropsWithChildren) => {
+export const Main = ({ children }: PropsWithChildren) => {
   const { styles } = useStyles();
 
   return (
@@ -27,5 +27,3 @@ const Main = ({ children }: PropsWithChildren) => {
     </Layout>
   );
 };
-
-export default Main;

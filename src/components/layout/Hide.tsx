@@ -17,10 +17,8 @@ const useStyles = createStyles(({ css, responsive }, { up, display = 'inline-blo
   `,
 }));
 
-const Hide = ({ children, ...props }: PropsWithChildren<HideProps>) => {
+export const Hide = ({ children, ...props }: PropsWithChildren<HideProps>) => {
   const { styles } = useStyles(props);
 
   return <div className={styles.container}>{children}</div>;
 };
-
-export default Hide;

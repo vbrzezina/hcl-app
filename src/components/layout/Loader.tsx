@@ -22,7 +22,7 @@ const useStyles = createStyles(({ css }, { height }: LoadingProps) => ({
   `,
 }));
 
-const Loader = (props: LoadingProps) => {
+export const Loader = (props: LoadingProps) => {
   const { styles } = useStyles(props);
 
   return (
@@ -31,5 +31,3 @@ const Loader = (props: LoadingProps) => {
     </div>
   );
 };
-
-export default Loader;

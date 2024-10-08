@@ -3,22 +3,22 @@ import React from 'react';
 
 import { createStyles } from 'antd-style';
 
-import { LineConfig } from '@ant-design/charts';
+import { BarConfig } from '@ant-design/charts';
 
 import { Loader } from '../layout';
 
 // FIXME: @antv/g2 commonjs has ESM dependency which can't be resolved with require()
 // It's actually convenient because the chart component otherwise blinks on load before it gets rendered
-const Line = dynamic(async () => (await import('@ant-design/charts')).Line, {
+const Bar = dynamic(async () => (await import('@ant-design/charts')).Bar, {
   loading: () => <Loader />,
   ssr: false,
 });
 
-export type LineChartProps = LineConfig & {
+export type BarChartProps = BarConfig & {
   height?: number;
 };
 
-const useStyles = createStyles(({ css }, { height }: LineChartProps) => ({
+const useStyles = createStyles(({ css }, { height }: BarChartProps) => ({
   chartContainer: css`
     position: relative;
     overflow: hidden;
@@ -32,12 +32,12 @@ const useStyles = createStyles(({ css }, { height }: LineChartProps) => ({
   `,
 }));
 
-export const LineChart = (props: LineChartProps) => {
+export const BarChart = (props: BarChartProps) => {
   const { styles } = useStyles(props);
 
   return (
     <div className={styles.chartContainer}>
-      <Line {...props} autoFit={true} />
+      <Bar {...props} autoFit={true} />
     </div>
   );
 };

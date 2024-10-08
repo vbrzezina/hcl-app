@@ -9,8 +9,7 @@ import { createGlobalStyle, ThemeProvider } from 'antd-style';
 import { HydrationBoundary, keepPreviousData, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import Header from '@/components/layout/Header';
-import Main from '@/components/layout/Main';
+import { Header, Main } from '@/components/layout';
 
 import theme from '../theme';
 

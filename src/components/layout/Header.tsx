@@ -16,14 +16,12 @@ const useStyles = createStyles(({ css, token, responsive }) => ({
   `,
 }));
 
-const Header = () => {
+export const Header = () => {
   const { styles } = useStyles();
 
   return (
     <Layout.Header className={styles.header}>
-      <Title level={4}>App title</Title>
+      <Title level={4}>UKHSA data dashboard</Title>
     </Layout.Header>
   );
 };
-
-export default Header;
